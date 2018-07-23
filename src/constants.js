@@ -1,4 +1,3 @@
-// import firebase from 'firebase'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
@@ -14,3 +13,4 @@ firebase.initializeApp(config);
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const ref = firebase.database().ref();
 export const firebaseAuth = firebase.auth;
+export const authKey = 'authToken';

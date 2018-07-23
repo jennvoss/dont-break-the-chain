@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import './App.css';
 import InfiniteCalendar from 'react-infinite-calendar';
 import 'react-infinite-calendar/styles.css';
-import {loggedIn} from './auth';
+import {checkLogin, getUser} from './auth';
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {selectedDate: new Date(), showModal: true};
+    this.state = {selectedDate: new Date(), showModal: true, loggedIn: false};
   }
 
   componentWillMount() {
-    if (!loggedIn()) {
-      this.props.history.push('/login');
-    }
+    checkLogin(user => {
+      if (!user) {
+        this.props.history.push('/login');
+        return;
+      }
+      this.setState({loggedIn: true})
+    });
   }
 
   dateSelected = date => {
@@ -28,7 +32,7 @@ class App extends Component {
   };
 
   render() {
-    return <div>
+    return this.state.loggedIn ? <div>
         <InfiniteCalendar onSelect={this.dateSelected} selected={this.state.selectedDate} />
 
         <div className="modal" hidden={!this.state.showModal}>
@@ -37,7 +41,7 @@ class App extends Component {
           </button>
           hee hee ;)
         </div>
-      </div>;
+      </div> : '<p>Loading</p>';
   }
 }
 

@@ -1,16 +1,29 @@
-import {firebaseAuth, googleProvider} from "./constants";
+import {firebaseAuth, googleProvider, authKey} from "./constants";
+
+const saveUser = (key) => localStorage.setItem(authKey, key);
+const removeUser = () => localStorage.removeItem(authKey);
 
 export function loginWithGoogle() {
   return firebaseAuth().signInWithRedirect(googleProvider);
+}
+
+export function getUser() {
+  return localStorage.getItem(authKey);
 }
 
 export function logout() {
   return firebaseAuth().signOut();
 }
 
-export function loggedIn() {
-  firebaseAuth().onAuthStateChanged(function(user) {
-    console.log('user', user);
-    return user;
-  });
+export function checkLogin(cb) {
+  firebaseAuth()
+    .onAuthStateChanged(result => {
+      console.log('isLoggedIn', result);
+      if (result && result.uid) {
+        saveUser(result.uid);
+      } else {
+        removeUser();
+      }
+      cb(result);
+    });
 }
