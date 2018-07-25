@@ -1,22 +1,3 @@
-.Cal__Container__root {
-  width: 100% !important;
-}
-
-.modal {
-  background: white;
-  border: 2px solid;
-  box-sizing: border-box;
-  padding: 10px;
-
-  position: absolute;
-  top: 98px;
-  bottom: 0;
-  width: 100%;
-  z-index: 10; /* over app */
-}
-
-.modal .close {
-  float: right;
-  border: 1px solid;
-  font-size: 1em;
+form label {
+  display: block;
 }
