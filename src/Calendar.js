@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { db } from "./constants";
-import ToggleButton from 'react-toggle-button';
+import Toggle from './Toggle';
 import InfiniteCalendar from 'react-infinite-calendar';
 import 'react-infinite-calendar/styles.css';
 import './Calendar.css';
+import MdClose from 'react-icons/lib/md/close';
 
 class Calendar extends Component {
   constructor() {
@@ -76,7 +77,7 @@ class Calendar extends Component {
 
         <div className="modal" hidden={!this.state.showModal}>
           <button className="close" onClick={this.openModal.bind(this, false)}>
-            X
+            <MdClose />
           </button>
           <div className="settings">
             <h1>Settings</h1>
@@ -92,18 +93,19 @@ class Calendar extends Component {
             </form>
 
             <h2>Show/hide chains</h2>
-            <ul>
+            <ul className="chains">
               {Object.keys(this.state.chains).map(key => {
                 return (
                   <li key={key}>
-                    {this.state.chains[key].name}
-                    <ToggleButton
+                    <span>{this.state.chains[key].name}</span>
+                    <Toggle
                       value={this.state.chains[key].show}
                       onToggle={this.toggleShowValue.bind(this, key)}
                     />
                   </li>
                 );
               })}
+
             </ul>
           </div>
         </div>
