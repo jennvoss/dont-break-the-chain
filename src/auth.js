@@ -18,7 +18,6 @@ export function logout() {
 export function checkLogin(cb) {
   firebaseAuth()
     .onAuthStateChanged(result => {
-      console.log('isLoggedIn', result);
       if (result && result.uid) {
         saveUser(result.uid);
       } else {

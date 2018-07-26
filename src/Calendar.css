@@ -24,17 +24,16 @@
   padding: 3px;
   color: white;
   background-color: #ccc;
+  cursor: pointer;
 }
 
-.settings .chains {
-  list-style: none;
-  padding: 0;
-}
-
-.settings .chains li {
-  display: flex;
-  margin-right: 5px;
-  padding: 15px 10px 15px 0;
-  justify-content: space-between;
-  border-bottom: 1px dashed #ccc;
+.settings-icon {
+  position: absolute;
+  z-index: 10;
+  width: 25px;
+  height: 25px;
+  right: 10px;
+  top: 10px;
+  color: #164187;
+  cursor: pointer;
 }

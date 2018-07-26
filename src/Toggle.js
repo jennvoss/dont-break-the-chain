@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ToggleButton from 'react-toggle-button';
 import MdCheck from 'react-icons/lib/md/check';
 
