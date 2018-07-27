@@ -23,7 +23,7 @@ const styles = {
 const Toggle = (props) => {
   return (
     <ToggleButton
-      value={props.value}
+      value={!!props.value}
       onToggle={props.onToggle}
       inactiveLabel={''}
       activeLabel={''}

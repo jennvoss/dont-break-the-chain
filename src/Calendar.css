@@ -9,10 +9,14 @@
   padding: 10px;
 
   position: absolute;
-  top: 98px;
+  top: 0;
   bottom: 0;
   width: 100%;
   z-index: 10; /* over app */
+}
+
+.modal-update {
+  top: 98px;
 }
 
 .modal .close {

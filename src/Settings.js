@@ -38,8 +38,7 @@ class Settings extends Component {
   }
 
   toggleShowValue = (key, val) => {
-    db.ref('users/' + this.props.uid + '/chains/' + key + '/show').set(!val);
-    this.props.chains[key].show = !val;
+    db.ref('users/' + this.props.uid + '/chains/' + key + '/show').set(val);
   }
 
   render() {
@@ -58,13 +57,13 @@ class Settings extends Component {
         </form>
 
         <h2>Show/hide chains</h2>
-        <ul className="chains">
+        <ul className="chain-list">
           {Object.keys(this.props.chains).map(key => {
             return (
               <li key={key}>
                 <span>{this.props.chains[key].name}</span>
                 <Toggle
-                  value={this.props.chains[key].show}
+                  value={!this.props.chains[key].show}
                   onToggle={this.toggleShowValue.bind(this, key)}
                 />
               </li>

@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loggedIn ? <Calendar uid={this.state.uid} /> : '<p>Loading</p>';
+    return this.state.loggedIn ? <Calendar uid={this.state.uid} /> : <p>Loading</p>;
   }
 }
 
