@@ -4,13 +4,13 @@ import Settings from './Settings';
 import UpdateChain from './UpdateChain';
 import InfiniteCalendar from 'react-infinite-calendar';
 import 'react-infinite-calendar/styles.css';
-import './Calendar.css';
+import './Home.css';
 import MdClose from 'react-icons/lib/md/close';
 import MdSettings from 'react-icons/lib/md/settings';
 
-class Calendar extends Component {
-  constructor() {
-    super();
+class Home extends Component {
+  constructor(props) {
+    super(props);
     this.emptyDiv = <div />;
     this.state = {
       selectedDate: new Date(),
@@ -93,4 +93,4 @@ class Calendar extends Component {
   }
 }
 
-export default Calendar;
+export default Home;

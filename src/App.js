@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Calendar from './Calendar';
+import Home from './Home';
 import './App.css';
 import {checkLogin} from './auth';
 
@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loggedIn ? <Calendar uid={this.state.uid} /> : <p>Loading</p>;
+    return this.state.loggedIn ? <Home uid={this.state.uid} /> : <p>Loading</p>;
   }
 }
 
