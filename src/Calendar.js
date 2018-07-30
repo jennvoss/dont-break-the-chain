@@ -24,7 +24,7 @@ class Calendar extends Component {
     this.getChains();
   }
 
-  setSelectedDate = date => {
+  setSelectedDate = (date) => {
     this.setState({selectedDate: date});
     this.openModal({ show: true, content: <UpdateChain />, modalClass: 'update'});
   }
@@ -33,10 +33,34 @@ class Calendar extends Component {
     this.setState({showModal: show, modalContent: content, modalClass: modalClass});
   }
 
+  setStyles(chains) {
+    const selectors = Object.keys(chains.dates).map(date => {
+      if (!!chains.dates[date]) {
+        return '#calendar li[data-date="' + date + '"]::after';
+      }
+    }).filter(x => !!x).join(',');
+
+    const styles = [
+      selectors,
+      '{content: "";',
+      'border-radius: 500px;',
+      'top: 19%;',
+      'left: 0;',
+      'position: absolute;',
+      'width: 100%;',
+      'height: 60%;',
+      'background-color: #94c0f9;',
+      'z-index: -2;}',
+    ].join('');
+
+    document.getElementById('custom-styles').innerHTML = styles;
+  }
+
   getChains() {
     const chains = db.ref('/users/' + this.props.uid + '/chains/');
     chains.on('value', snapshot => {
-      this.setState({chains: snapshot.val() });
+      this.setState({chains: snapshot.val()});
+      this.setStyles(snapshot.val());
     });
   }
 
@@ -47,9 +71,12 @@ class Calendar extends Component {
           content: <Settings />
         })} />
 
-        <InfiniteCalendar
-          onSelect={this.setSelectedDate.bind(this)}
-        />
+        <style id="custom-styles"></style>
+        {this.state.chains && <div id="calendar">
+          <InfiniteCalendar
+            onSelect={this.setSelectedDate.bind(this)}
+          />
+        </div>}
 
         <div className={'modal modal-' + this.state.modalClass} hidden={!this.state.showModal}>
           <button className="close" onClick={this.openModal.bind(this, {show: false})}>
