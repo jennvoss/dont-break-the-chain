@@ -11,15 +11,19 @@ class UpdateChain extends Component {
     };
   }
 
-  formatDate(date) {
-    // returns "yyyy-M-D"
-    return [date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate()].join('-');
+  addLeadingZero (n) {
+    return n.length === 1 ? '0' + n : n;
   }
 
-  toggleValue = (key, val) => {
-    const datesRef = 'users/' + this.props.uid + '/chains/' + key + '/dates/';
+  formatDate(date) {
+    // returns "yyyy-MM-DD"
+    return [date.getFullYear(),
+      this.addLeadingZero(date.getMonth() + 1),
+      this.addLeadingZero(date.getDate())].join('-');
+  }
+
+  toggleValue = (val) => {
+    const datesRef = 'users/' + this.props.uid + '/dates/';
     db.ref(datesRef + this.formatDate(this.props.date)).set(val);
   }
 
@@ -39,7 +43,7 @@ class UpdateChain extends Component {
                 <span>{this.props.chains[key].name}</span>
                 <Toggle
                   value={!this.getValue(this.props.chains[key].dates)}
-                  onToggle={this.toggleValue.bind(this, key)}
+                  onToggle={this.toggleValue}
                 />
               </li>
             );
