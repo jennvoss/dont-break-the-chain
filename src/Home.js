@@ -13,10 +13,11 @@ class Home extends Component {
     super(props);
     this.emptyDiv = <div />;
     this.state = {
-      selectedDate: new Date(),
-      showModal: false,
+      chains: {},
+      dates: {},
       modalContent: this.emptyDiv,
-      chains: []
+      selectedDate: null,
+      showModal: false
     };
   }
 
@@ -24,8 +25,20 @@ class Home extends Component {
     this.getChains();
   }
 
+  addLeadingZero (n) {
+    n = n.toString();
+    return n.length === 1 ? '0' + n : n;
+  }
+
+  formatDate(date) {
+    // returns "yyyy-MM-DD"
+    return [date.getFullYear(),
+      this.addLeadingZero(date.getMonth() + 1),
+      this.addLeadingZero(date.getDate())].join('-');
+  }
+
   setSelectedDate = (date) => {
-    this.setState({selectedDate: date});
+    this.setState({selectedDate: this.formatDate(date)});
     this.openModal({ show: true, content: <UpdateChain />, modalClass: 'update'});
   }
 
@@ -33,11 +46,12 @@ class Home extends Component {
     this.setState({showModal: show, modalContent: content, modalClass: modalClass});
   }
 
-  setStyles(chains) {
-    const selectors = Object.keys(chains.dates).map(date => {
-      if (!!chains.dates[date]) {
+  setStyles(dates) {
+    const selectors = Object.keys(dates).map(date => {
+      if (!!dates[date].complete) {
         return '#calendar li[data-date="' + date + '"]::after';
       }
+      return false;
     }).filter(x => !!x).join(',');
 
     const styles = [
@@ -57,10 +71,14 @@ class Home extends Component {
   }
 
   getChains() {
-    const chains = db.ref('/users/' + this.props.uid + '/chains/');
-    chains.on('value', snapshot => {
-      this.setState({chains: snapshot.val()});
-      this.setStyles(snapshot.val());
+    const userData = db.ref('/users/' + this.props.uid);
+    userData.on('value', snapshot => {
+      const val = snapshot.val();
+
+      if (!val) return;
+
+      this.setState({chains: val.chains || {}, dates: val.dates || {}});
+      this.setStyles(val.dates || {});
     });
   }
 
@@ -84,6 +102,7 @@ class Home extends Component {
           </button>
           {React.cloneElement(this.state.modalContent, {
             chains: this.state.chains,
+            dates: this.state.dates,
             date: this.state.selectedDate,
             uid: this.props.uid
           })}

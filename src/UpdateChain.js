@@ -4,46 +4,39 @@ import Toggle from './Toggle';
 // import './Update-chain.css';
 
 class UpdateChain extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       newName: ''
     };
   }
 
-  addLeadingZero (n) {
-    return n.length === 1 ? '0' + n : n;
+  toggleValue = (key, val) => {
+    const datesRef = 'users/' + this.props.uid + '/dates/' + this.props.date;
+    db.ref(datesRef + '/' + key).set(val);
   }
 
-  formatDate(date) {
-    // returns "yyyy-MM-DD"
-    return [date.getFullYear(),
-      this.addLeadingZero(date.getMonth() + 1),
-      this.addLeadingZero(date.getDate())].join('-');
-  }
-
-  toggleValue = (val) => {
-    const datesRef = 'users/' + this.props.uid + '/dates/';
-    db.ref(datesRef + this.formatDate(this.props.date)).set(val);
-  }
-
-  getValue(dates) {
-    return dates && dates[this.formatDate(this.props.date)];
+  getValue(key) {
+    return (this.props.dates[this.props.date] || {})[key];
   }
 
   render() {
-    return (
+    const chains = Object.keys(this.props.chains)
+      .filter(key => !!this.props.chains[key].show)
+      .map(key => Object.assign({key: key}, this.props.chains[key]));
+
+      return (
       <div className="settings">
         <h1>Did you do the things?</h1>
 
         <ul className="chain-list">
-          {Object.keys(this.props.chains).map(key => {
+          {chains.map((item) => {
             return (
-              <li key={key}>
-                <span>{this.props.chains[key].name}</span>
+              <li key={item.key}>
+                <span>{item.name}</span>
                 <Toggle
-                  value={!this.getValue(this.props.chains[key].dates)}
-                  onToggle={this.toggleValue}
+                  value={!this.getValue(item.key)}
+                  onToggle={this.toggleValue.bind(this, item.key)}
                 />
               </li>
             );
